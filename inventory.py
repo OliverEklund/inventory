@@ -4,13 +4,19 @@ from typing import List
 class Item:
     def __init__(self, name, spaces = 0, uses = 0):
         self.name = name
-    @abstractmethod
-    def use(self):
-        print("Du använder" + self.name)
+        self.spaces = spaces
+        self.uses = uses
+    
+    def use(self, inventory):
+        print("Du använder " + self.name)
+        self.uses -= 1
+        if self.uses == 0:
+            print(self.name + " kan inte användas något mer")
+            inventory.remove_item(self)
 
-class Lead_pipe(Item):
+class gun(Item):
     def use(self):
-        print("Clang!")
+        print("bang!")
 
 class Inventory():
     def __init__(self):
@@ -25,6 +31,7 @@ class Inventory():
     
     def remove_item(self, item):
         if item in self.contents:
+            print(f"{item.name} removed from inventory")
             self.contents.remove(item)
         else:
             pass
@@ -32,16 +39,18 @@ class Inventory():
 player_inventory = Inventory()
 hagelbössa = Item("Hagelbössa", 7, 2)
 wienerbröd = Item("Stort Wienerbröd", 1, 5)
-Sten = Item("Sten", 2, 1)
+sten = Item("Sten", 2, 1)
 player_inventory.add_item(hagelbössa)
-player_inventory.add_item(Sten)
+player_inventory.add_item(sten)
 player_inventory.add_item(wienerbröd)
+hagelbössa.use(player_inventory)
+hagelbössa.use(player_inventory)
 
 for item in player_inventory.get_contents():
     print(item.name)
 
-input("")
-player_inventory.remove_item(hagelbössa)
+# input("")
+player_inventory.remove_item(sten)
 
 for item in player_inventory.get_contents():
     print(item.name)
